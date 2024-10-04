@@ -5,6 +5,7 @@ import './App.css'
 import Home from './components/Home'
 import Add from './components/Add'
 import Navbar from './components/Navbar'
+import Dell from './components/Dell'
 
 import { Route, Routes } from 'react-router-dom'
 
@@ -18,6 +19,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Home/>}></Route>
       <Route path='/add' element={<Add/>}></Route>
+      <Route path='/dell' element={<Dell/>}></Route>
 
     </Routes>
     </>

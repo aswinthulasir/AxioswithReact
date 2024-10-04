@@ -7,24 +7,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import axios from 'axios';
 
 // Custom styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.common.white,
+  backgroundColor: '#000000', // Setting cell background to black
+  color: '#FFFFFF', // Setting text color to white
   fontWeight: 'bold',
   fontSize: 16,
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: '#000000', // Black background for odd rows
+    color: '#FFFFFF', // White text for odd rows
+  },
+  '&:nth-of-type(even)': {
+    backgroundColor: '#E50914', // Alternate row color (Netflix red)
+    color: '#FFFFFF', // White text for even rows
   },
 }));
 
@@ -43,8 +43,8 @@ const Home = () => {
   }, []);
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 4, boxShadow: 3, borderRadius: 2 }}>
-      <Table sx={{ minWidth: 700 }} aria-label="product table">
+    <TableContainer component={Paper} sx={{ mt: 4, boxShadow: 3, borderRadius: 2, width: '100%', bgcolor: '#E50914' }}>
+      <Table sx={{ width: '100%', margin: 0 }} aria-label="product table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Title</StyledTableCell>
@@ -71,21 +71,7 @@ const Home = () => {
         </TableBody>
       </Table>
     </TableContainer>
-
-
-          
-
-
-
-
-
   );
-
-
-
-
-
-
 };
 
 export default Home;

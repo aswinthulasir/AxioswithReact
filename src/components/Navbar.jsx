@@ -11,22 +11,32 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
+  <AppBar position="fixed" sx={{ width: '100%', bgcolor: '#000000' }}>
+    <Toolbar>
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        sx={{ mr: 2 }}
+      >
             
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Product Details
-          </Typography>
-         <Link to={'/'}> <Button variant="contained" color="primary">Home</Button></Link>
-         <Link to={'/add'}><Button variant="contained" color="primary">Add</Button></Link>
+          <Typography
+        variant="h5"
+        component="div"
+        sx={{
+          flexGrow: 1,
+          fontWeight: 'bold', // Use lowercase 'bold'
+          color: '#E50914',
+          ml: 1, 
+        }}
+      >
+        PRODUCT STORE
+      </Typography>
+         <Link to={'/'}> <Button variant="contained"sx={{ backgroundColor: '#E50914', color: 'white',margin: '5px', '&:hover': {backgroundColor: '#B20710',},}}>Home</Button></Link>
+         <Link to={'/add'}><Button variant="contained"sx={{ backgroundColor: '#E50914', color: 'white', margin: '5px', '&:hover': {backgroundColor: '#B20710',},}}>Products</Button></Link>
+         <Link to={'/dell'}><Button variant="contained"sx={{ backgroundColor: '#E50914', color: 'white', margin: '5px', '&:hover': {backgroundColor: '#B20710',},}}>Sell</Button></Link>
         </Toolbar>
       </AppBar>
     </Box>
