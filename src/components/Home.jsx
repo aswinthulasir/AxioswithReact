@@ -1,76 +1,98 @@
 import React, { useEffect, useState } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Grid, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 
-// Custom styled components
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  backgroundColor: '#000000', // Setting cell background to black
-  color: '#FFFFFF', // Setting text color to white
-  fontWeight: 'bold',
-  fontSize: 16,
+// Custom styles for KPI cards (Red background and white text)
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#E50914', // Red background
+  padding: theme.spacing(3),
+  textAlign: 'center',
+  color: '#FFFFFF', // White text
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: '#000000', // Black background for odd rows
-    color: '#FFFFFF', // White text for odd rows
-  },
-  '&:nth-of-type(even)': {
-    backgroundColor: '#E50914', // Alternate row color (Netflix red)
-    color: '#FFFFFF', // White text for even rows
-  },
+// Line chart customization for white lines, labels, and text
+const StyledLineChart = styled(LineChart)(({ theme }) => ({
+  backgroundColor: '#E50914', // Red background
+  color: '#FFFFFF', // White text
 }));
 
 const Home = () => {
-  const [rows, setRows] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState({
+    totalSales: 0,
+    totalUsers: 0,
+    totalOrders: 0,
+    chartData: [],
+  });
 
-  // Fetching data from the external API
+  // Example of API call to fetch analytics data
   useEffect(() => {
-    axios.get('https://fakestoreapi.com/products')
-      .then((res) => {
-        setRows(res.data); // Correct: using res.data to set rows
-      })
-      .catch((error) => {
-        console.error("Error fetching the data", error);
-      });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/analytics');
+        setAnalyticsData(response.data);
+      } catch (error) {
+        console.error('Error fetching analytics data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
+  // Dummy data for the chart
+  const dummyChartData = [
+    { month: 'Jan', sales: 400 },
+    { month: 'Feb', sales: 300 },
+    { month: 'Mar', sales: 500 },
+    { month: 'Apr', sales: 700 },
+    { month: 'May', sales: 600 },
+  ];
+
   return (
-    <TableContainer component={Paper} sx={{ mt: 4, boxShadow: 3, borderRadius: 2, width: '100%', bgcolor: '#E50914' }}>
-      <Table sx={{ width: '100%', margin: 0 }} aria-label="product table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Title</StyledTableCell>
-            <StyledTableCell align="right">Price</StyledTableCell>
-            <StyledTableCell align="right">Description</StyledTableCell>
-            <StyledTableCell align="right">Category</StyledTableCell>
-            <StyledTableCell align="right">Image</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={index}>
-              <TableCell component="th" scope="row">
-                {row.title}
-              </TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.description}</TableCell>
-              <TableCell align="right">{row.category}</TableCell>
-              <TableCell align="right">
-                <img src={row.image} alt={row.title} style={{ width: 50, height: 50 }} />
-              </TableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Grid container spacing={3}>
+      {/* Total Sales */}
+      <Grid item xs={12} sm={4}>
+        <StyledPaper>
+          <Typography variant="h6">Total Sales</Typography>
+          <Typography variant="h4">${analyticsData.totalSales}</Typography>
+        </StyledPaper>
+      </Grid>
+
+      {/* Total Users */}
+      <Grid item xs={12} sm={4}>
+        <StyledPaper>
+          <Typography variant="h6">Total Users</Typography>
+          <Typography variant="h4">{analyticsData.totalUsers}</Typography>
+        </StyledPaper>
+      </Grid>
+
+      {/* Total Orders */}
+      <Grid item xs={12} sm={4}>
+        <StyledPaper>
+          <Typography variant="h6">Total Orders</Typography>
+          <Typography variant="h4">{analyticsData.totalOrders}</Typography>
+        </StyledPaper>
+      </Grid>
+
+      {/* Sales Chart */}
+      <Grid item xs={12}>
+        <Paper style={{ padding: '20px', backgroundColor: '#E50914', color: '#FFFFFF' }}>
+          <Typography variant="h6" gutterBottom style={{ color: '#FFFFFF' }}>
+            Sales Over Time
+          </Typography>
+          <ResponsiveContainer width="100%" height={300}>
+            <StyledLineChart data={dummyChartData}>
+              <CartesianGrid stroke="#FFFFFF" strokeDasharray="3 3" />
+              <XAxis dataKey="month" stroke="#FFFFFF" />
+              <YAxis stroke="#FFFFFF" />
+              <Tooltip contentStyle={{ backgroundColor: '#000000', color: '#FFFFFF' }} />
+              <Line type="monotone" dataKey="sales" stroke="#FFFFFF" strokeWidth={2} />
+            </StyledLineChart>
+          </ResponsiveContainer>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
